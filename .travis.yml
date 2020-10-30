@@ -25,4 +25,4 @@ after_success:
 deploy:
   provider: heroku
   api_key: $HEROKU_API_KEY
-  app: myapi-s2
+  app: myapi-s
