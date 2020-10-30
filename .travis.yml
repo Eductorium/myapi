@@ -4,3 +4,25 @@ language: java
 services:
   - postgresql
   - docker
+env:
+  global:
+    - secure: "jDPNifv0ZYjBJLfm7QWT8jqqj0w8iSxktvMqg+7n6iIUyih+JKjfpErzaY/LV3jBWYF1obJqOhy6kFwX0U9uOELQCTkLbXx3SkjmlizSwqi4gJ0AdhA5joASO8XAktFCj/6ffpgG6coS532IREMHNpz3lFvg9FmrZR4wiry5kBf8lD9lgJZC8q57+bE5MCWQjnzkIfOe38Cp7CKkJ+lW3zyhE4N9Km2AUB/3rVISCQi3f5Hxl5g2H/zY1jKyUVh5kimNydPPQdNv0V5E1MVs+e9qkx/Y1gOT8FUfNz8qhGPTQq/keXr3h2bZ8vPxZeAc262GpIQB+xrOos11NKRhd3QjMYU76dIyiIqv5V+XkTNusH50eloZVjteSqNo2ZRKpjzqGzwqZJgv8miXwjNIkhNEUu5fvXUd5QO/uRJ5KCuBtr4R+D1TdfQGzODs9hQIaHoCcs8ZVTyBAkbjieJGM4v7nUj/USLfFBSE4P7+c0QV0jVyNYHizq920BWwCGG7KytNrCamP2WoVCQTpJSNiDnWHcDtVG0607q43xDgyQgNe3zcWT+DrdmSRCxMgJh0MHUG3pS+qCj6Hm3Egbbh60Y5f7nxgu+inshhjs1UWjJ7RCMXGGCdYWIoVxEyFpWPE172G/i5uWSgGs5X4J/m0/skfyCW17GHbe9CzhxA6QA="
+    - secure: "k4Yc2W2gUWFfSQFFScgRnW6u3UeNOQcb+QrktlGo4j4DbxIyhAkRHLOf5RwdrsKl9V+d3iQSBvuyAYWjPOAblP7/pIEuhgFvclhqc7+eXGBsGH0GsQSXLecDM6vJjISlgq7T/OK0n6+SMuvp3cfjTBCZjKvu2MadDs99XGn3s60mWXsxDUjPo3VPaBOaThs5G1yo3cvfpCfhR7Fe27vfhaO+Cdv+sJlX0z5TF+H17o6BJcQeXfM6W75hgWpjJgbHYoYA4HkF88f0kBaHNE6IeB0bTsI5QbpBvt/u2lzHMfjeEKVSfWwxgQtL7srBqew641AL0UcJGkD+EhC6h7h+cqPlvqLh0XFiN56z81wo90Qu5LjSR3C0a/ZebdaatvPw7X5y8bqoH6l4WIVvUDTf0jYgKbUp8iPzc1/DVzU1qVRrYmtTEc8+EmD5JDJJy1E32EzN/DcQTb17cnNT2iWPJFOWYNUCII9NAgIJ4nXbBPphKjFe3CFpRELml+RqgrKj3LAGpskeAwLvC8qMYqCiR6BudQUwbBZdDG42HW7ZA7XuZtEp5KpPAXli6QjbJDdQ4dWOjroFRvv3tNZp1eZ3mWDhQ0Zw0YRQDiMAfg3niPipoHgTZZXhg+BchWJqblbzCGdu7I0qps8CEphH9m9qQYMY8JBYVakDM2vwmfGRC28="
+    - secure: "Ajcf4Do9G3GuZap3ayKg6/Qr8Rk0XZXW8UaPbNzsuXpJ6uvSNIc10RTrzZUi08+pP52dwPs4jCXc0iskzGKjeGhqPretyIdg/5krbUVoH67hMLGamA/IIrHeuFGhchILBpSk1300xb+q5JuE7tNZO4EgMQtuX1Q+LJm8PacBhTZNLWFRpEVNLQ8hkP5oTZjYLHNxA3Xw0iti97aYAeIYSCG6tMvN1HHF7IkkhnjnGuPMcWTZPr5c3ehElB8tqTdcE3MgaDeo4fvjuPbmSuDvYqb3N0ba3SbrjRyShMXcYqJsMCBzrmw58/QNTUXdqFGLJzwtYYVTarZdeug8BBTnfShcoBADVm4PSFKFhB+dPwHxbKEbjCUB12aEMiUMoDWo1X+c9d2BEvJ+CwXFesnCQpe96JofDy+WdBVoh+EkP43mv333QjQmHnoGBUKGCu/FIcroBLNnPZAnt1L85F6cDZl+vKklkkOyQQa9m2UE6wjwjL3hwaSPhOiLwwPEwcbtda3WAjPuL0ehT+9P8ioMxAdt237EYUMqD2I0ds0ZGU3pxffwxJHj9RyoIL4AS/XLGBW4rDPoq2Z9TNlErou6F0BOd2rygrzB6gC7gSdZFSdYCtGROmhejmAYqhZJrA2iExqIegrvDzDx4tH/VrfpIvITZ2fvUhHonszOECV6XTY="
+    - COMMIT=${TRAVIS_COMMIT::7}
+
+script:
+  - ./mvnw clean install -B
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH&amp;amp;amp;amp;amp;amp;lt;span data-mce-type="bookmark" style="display: inline-block; width: 0px; overflow: hidden; line-height: 0;" class="mce_SELRES_start"&amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;lt;/span&amp;amp;amp;amp;amp;amp;gt;; fi`
+  - export IMAGE_NAME=sivaprasadreddy/freelancer-kit
+  - docker build -t $IMAGE_NAME:$COMMIT .
+  - docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
+  - docker push $IMAGE_NAME
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: myapi-s2
